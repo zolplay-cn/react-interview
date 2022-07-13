@@ -9,7 +9,26 @@ import {
 import { classNames } from './Example'
 import Image from 'next/image'
 
-const RepositoryOption: FC = () => {
+/**
+ * 仓库数据的类型
+ */
+type Repository = {
+  id: number
+  name: string
+  full_name: string
+  open_issues_count: number
+  stargazers_count: number
+  forks_count: number
+  url: string
+  language: string
+  owner: {
+    login: string
+    avatar_url: string
+  }
+}
+
+const RepositoryOption: FC<Repository> = (props) => {
+  const { full_name } = props
   return (
     <Combobox.Option
       value={'repository'}
@@ -30,7 +49,7 @@ const RepositoryOption: FC = () => {
               )}
               aria-hidden="true"
             />
-            <span className="ml-1 font-bold flex-auto truncate">仓库名</span>
+            <span className="ml-1 font-bold flex-auto truncate">{full_name}</span>
           </header>
 
           <footer className="flex items-center justify-between">

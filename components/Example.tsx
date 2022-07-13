@@ -6,11 +6,14 @@ import { Combobox, Dialog, Transition } from '@headlessui/react'
 import { SearchIcon } from '@heroicons/react/solid'
 import { EmojiHappyIcon } from '@heroicons/react/outline'
 import RepositoryOption from './RepositoryOption'
+import { json } from 'stream/consumers'
+import { isSymbolObject } from 'util/types'
 
 /**
  * 仓库数据的类型
  */
 type Repository = {
+  id: number
   name: string
   full_name: string
   open_issues_count: number
@@ -44,8 +47,28 @@ export default function Example() {
   }, [open])
 
   const [rawQuery, setRawQuery] = useState('')
-  const query = rawQuery.toLowerCase().replace(/^[#>]/, '')
+  const [queryResult, setQueryResult] = useState<Repository[]>([])
 
+  useEffect(() => {
+    const url = `/api/search?q=${rawQuery}`
+    fetch(url)
+      .then((data) => data.json())
+      .then((data) => {
+        if (data?.items) {
+          const result: Repository[] = data.items
+          setQueryResult(result)
+        }
+      })
+      .catch((err) => {})
+  }, [rawQuery])
+
+  const resultList: any = () => {
+    return queryResult.map((item) => (
+      <RepositoryOption {...item} key={item.id} />
+    ))
+  }
+
+  const query = rawQuery.toLowerCase().replace(/^[#>]/, '')
   return (
     <Transition.Root
       show={open}
@@ -104,9 +127,7 @@ export default function Example() {
                       仓库列表
                     </h2>
                     <ul className="-mx-4 mt-2 text-sm text-gray-700 space-y-0.5">
-                      <RepositoryOption />
-                      <RepositoryOption />
-                      <RepositoryOption />
+                      {resultList()}
                     </ul>
                   </li>
                 </Combobox.Options>
