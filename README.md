@@ -13,9 +13,19 @@ The project is bootstrapped with [Next.js](https://nextjs.org/).
 - [Tailwind CSS](https://tailwindcss.com/)
 - [Headless UI](https://headlessui.dev/)
 
-## Set up for development
+## Getting Started
 
-```bash
-pnpm i
-pnpm dev
-```
+### Setup
+
+1. **Fork this repository to your GitHub account**
+2. Clone your forked repository
+   ```bash
+   git clone https://github.com/your-username/react-interview.git
+   cd react-interview
+   ```
+3. Install dependencies and start the dev server
+   ```bash
+   pnpm i
+   pnpm dev
+   ```
+4. Open [http://localhost:3000](http://localhost:3000) in your browser
